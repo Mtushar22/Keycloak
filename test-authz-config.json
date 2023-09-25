@@ -1,0 +1,137 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "Default Resource",
+      "type": "urn:fairmatic_pas:resources:default",
+      "ownerManagedAccess": false,
+      "attributes": {},
+      "_id": "cef0afd8-7b49-41c4-9629-94ec36ff9fa9",
+      "uris": [
+        "/*"
+      ]
+    },
+    {
+      "name": "Protected-Resource",
+      "type": "api",
+      "ownerManagedAccess": true,
+      "attributes": {},
+      "_id": "b937383a-0576-4381-83f0-056a9fbd5c27",
+      "uris": [
+        "/protected"
+      ],
+      "scopes": [
+        {
+          "name": "protected:view"
+        }
+      ],
+      "icon_uri": ""
+    }
+  ],
+  "policies": [
+    {
+      "id": "23b6a304-f016-4114-8b09-8addde15fbf6",
+      "name": "Default Policy",
+      "description": "A policy that grants access only for users within this realm",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+      }
+    },
+    {
+      "id": "e68ff710-1866-49d8-b496-73a7df88dcaf",
+      "name": "Protected_Resource_Policy",
+      "description": "protected_Resource_Policy",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"admin\",\"required\":false},{\"id\":\"uma_authorization\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "ce9f9987-7cb2-4428-8b6a-a20aa822ceb2",
+      "name": "Test-Protected-Resource",
+      "description": "test the protected resource",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"fairmatic_pas/uma_protection\",\"required\":true}]"
+      }
+    },
+    {
+      "id": "2d4a5097-f1de-4116-a9ad-f3272817033f",
+      "name": "Default Permission",
+      "description": "A permission that applies to the default resource type",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "urn:fairmatic_pas:resources:default",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    },
+    {
+      "id": "eaa4160d-e468-4ff0-a1d4-29cd89bd8b45",
+      "name": "protected_Resource",
+      "description": "prrotect an api ",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "api",
+        "applyPolicies": "[\"Protected_Resource_Policy\"]"
+      }
+    },
+    {
+      "id": "8548c48a-41db-4182-938d-88d9ef5af40e",
+      "name": "protected_ResourceN",
+      "description": "protected_ResourceN",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "api",
+        "applyPolicies": "[\"Test-Protected-Resource\"]"
+      }
+    },
+    {
+      "id": "11ae01e6-93eb-4736-b5e8-0b6f0d5086b7",
+      "name": "Protected-Resource-Scope-Based",
+      "description": "Protected Resource Scope Based Permission",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "api",
+        "applyPolicies": "[\"Test-Protected-Resource\"]",
+        "scopes": "[\"protected:view\"]"
+      }
+    },
+    {
+      "id": "ff6dac87-6331-4710-922c-04860eff4974",
+      "name": "Resource-Based-Permission-Test",
+      "description": "Resource-Based-Permission-Test",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"Protected-Resource\"]",
+        "applyPolicies": "[\"Test-Protected-Resource\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "6ae59f8d-b0a8-4df2-924d-94d47a889269",
+      "name": "protected:view",
+      "iconUri": "test",
+      "displayName": "protected-view"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}
